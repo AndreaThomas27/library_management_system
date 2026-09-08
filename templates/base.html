@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    {% if session.get('user_id') %}
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="brand-icon">📚</span> Library System
+        </div>
+        <div class="navbar-links">
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if request.endpoint == 'admin_dashboard' }}">Dashboard</a>
+                <a href="{{ url_for('admin_books') }}" class="{{ 'active' if request.endpoint in ['admin_books','admin_add_book','admin_edit_book'] }}">Books</a>
+                <a href="{{ url_for('admin_transactions') }}" class="{{ 'active' if request.endpoint == 'admin_transactions' }}">Transactions</a>
+                <a href="{{ url_for('admin_users') }}" class="{{ 'active' if request.endpoint == 'admin_users' }}">Users</a>
+                <a href="{{ url_for('admin_reports') }}" class="{{ 'active' if request.endpoint == 'admin_reports' }}">Reports</a>
+            {% else %}
+                <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Dashboard</a>
+                <a href="{{ url_for('books') }}" class="{{ 'active' if request.endpoint in ['books','book_details'] }}">Books</a>
+                <a href="{{ url_for('scan') }}" class="{{ 'active' if request.endpoint == 'scan' }}">Scan QR</a>
+                <a href="{{ url_for('borrowed_books') }}" class="{{ 'active' if request.endpoint == 'borrowed_books' }}">My Borrowed Books</a>
+                <a href="{{ url_for('history') }}" class="{{ 'active' if request.endpoint == 'history' }}">History</a>
+            {% endif %}
+        </div>
+        <div class="navbar-user">
+            <span class="user-name">{{ session.get('name') }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-small btn-outline">Logout</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="page-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Reports - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Reports</h1>
+    <p class="subtitle">Download library data as CSV files.</p>
+</div>
+
+<div class="reports-grid">
+    <div class="report-card">
+        <span class="report-icon">📗</span>
+        <h3>Books Report</h3>
+        <p>All books with code, title, author, category, ISBN, and quantities.</p>
+        <a href="{{ url_for('download_books_report') }}" class="btn btn-primary">Download CSV</a>
+    </div>
+    <div class="report-card">
+        <span class="report-icon">🔁</span>
+        <h3>Transactions Report</h3>
+        <p>All issue and return records with student, book, and dates.</p>
+        <a href="{{ url_for('download_transactions_report') }}" class="btn btn-primary">Download CSV</a>
+    </div>
+</div>
+{% endblock %}

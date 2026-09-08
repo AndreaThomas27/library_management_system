@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Admin Dashboard</h1>
+    <p class="subtitle">Overview of the entire library system.</p>
+</div>
+
+<div class="stats-grid stats-grid-6">
+    <div class="stat-card stat-blue">
+        <div class="stat-value">{{ stats.total_books }}</div>
+        <div class="stat-label">Total Books</div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="stat-value">{{ stats.available_books }}</div>
+        <div class="stat-label">Available Books</div>
+    </div>
+    <div class="stat-card stat-orange">
+        <div class="stat-value">{{ stats.issued_books }}</div>
+        <div class="stat-label">Issued Books</div>
+    </div>
+    <div class="stat-card stat-purple">
+        <div class="stat-value">{{ stats.returned_books }}</div>
+        <div class="stat-label">Returned Books</div>
+    </div>
+    <div class="stat-card stat-teal">
+        <div class="stat-value">{{ stats.total_students }}</div>
+        <div class="stat-label">Total Students</div>
+    </div>
+    <div class="stat-card stat-red">
+        <div class="stat-value">{{ stats.overdue_books }}</div>
+        <div class="stat-label">Overdue Books</div>
+    </div>
+</div>
+
+<div class="details-card">
+    <h3>Books by Category</h3>
+    <canvas id="categoryChart" height="100"></canvas>
+</div>
+
+<script>
+    const categoryLabels = [{% for c in category_counts %}"{{ c['category'] }}",{% endfor %}];
+    const categoryValues = [{% for c in category_counts %}{{ c['count'] }},{% endfor %}];
+</script>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/simple_chart.js') }}"></script>
+{% endblock %}

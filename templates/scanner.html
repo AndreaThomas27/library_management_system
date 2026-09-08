@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Scan QR - Library System{% endblock %}
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Scan Book QR Code</h1>
+    <p class="subtitle">Point your camera at a book's QR code to view its details and issue it.</p>
+</div>
+
+<div class="scanner-wrapper">
+    <div id="qr-reader"></div>
+    <button id="startScanBtn" class="btn btn-primary">Start Camera</button>
+    <button id="stopScanBtn" class="btn btn-outline" style="display:none;">Stop Camera</button>
+
+    <div id="scanMessage" class="scan-message"></div>
+
+    <div id="scannedBookCard" class="scanned-book-card" style="display:none;">
+        <h3 id="scannedTitle"></h3>
+        <p id="scannedAuthor"></p>
+        <p id="scannedCategory"></p>
+        <p id="scannedAvailability"></p>
+        <button id="issueScannedBookBtn" class="btn btn-primary">Issue This Book</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

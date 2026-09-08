@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}My Borrowed Books - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>My Borrowed Books</h1>
+    <p class="subtitle">Books you currently have issued.</p>
+</div>
+
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in borrowed %}
+            <tr>
+                <td>
+                    <strong>{{ item['title'] }}</strong><br>
+                    <span class="muted">{{ item['author'] }}</span>
+                </td>
+                <td>{{ item['issue_date'] }}</td>
+                <td>{{ item['due_date'] }}</td>
+                <td>
+                    {% if item['display_status'] == 'Overdue' %}
+                        <span class="badge badge-danger">OVERDUE</span>
+                    {% else %}
+                        <span class="badge badge-warning">Issued</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="POST" action="{{ url_for('return_book', transaction_id=item['id']) }}">
+                        <button type="submit" class="btn btn-small btn-primary">Return</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="empty-state">You have no borrowed books right now.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

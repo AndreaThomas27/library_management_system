@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Borrowing History - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Borrowing History</h1>
+    <p class="subtitle">A record of every book you have borrowed.</p>
+</div>
+
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in transactions %}
+            <tr>
+                <td><strong>{{ item['title'] }}</strong><br><span class="muted">{{ item['author'] }}</span></td>
+                <td>{{ item['issue_date'] }}</td>
+                <td>{{ item['due_date'] }}</td>
+                <td>{{ item['return_date'] or '-' }}</td>
+                <td>
+                    {% if item['display_status'] == 'Returned' %}
+                        <span class="badge badge-success">Returned</span>
+                    {% elif item['display_status'] == 'Overdue' %}
+                        <span class="badge badge-danger">Overdue</span>
+                    {% else %}
+                        <span class="badge badge-warning">Issued</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="empty-state">No borrowing history yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

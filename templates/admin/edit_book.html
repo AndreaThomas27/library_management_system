@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Edit Book - Library System{% endblock %}
+{% block content %}
+<a href="{{ url_for('admin_books') }}" class="back-link">&larr; Back to Books</a>
+
+<div class="form-card">
+    <h1>Edit Book</h1>
+    <p class="subtitle">Book Code: <strong>{{ book['book_code'] }}</strong> (cannot be changed)</p>
+
+    <form method="POST" action="{{ url_for('admin_edit_book', book_id=book['id']) }}" class="auth-form">
+        <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" name="title" required value="{{ book['title'] }}">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="author">Author *</label>
+                <input type="text" id="author" name="author" required value="{{ book['author'] }}">
+            </div>
+            <div class="form-group">
+                <label for="category">Category *</label>
+                <input type="text" id="category" name="category" required value="{{ book['category'] }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" name="isbn" value="{{ book['isbn'] }}">
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity *</label>
+                <input type="number" id="quantity" name="quantity" min="0" required value="{{ book['quantity'] }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4">{{ book['description'] }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Books - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Browse Books</h1>
+    <p class="subtitle">Search and filter through our collection.</p>
+</div>
+
+<div class="filters-bar">
+    <input type="text" id="searchInput" placeholder="Search by title, author, or ISBN..." class="search-input">
+    <select id="categoryFilter" class="filter-select">
+        <option value="all">All Categories</option>
+        {% for category in categories %}
+            <option value="{{ category['category'] }}">{{ category['category'] }}</option>
+        {% endfor %}
+    </select>
+    <select id="availabilityFilter" class="filter-select">
+        <option value="all">All Books</option>
+        <option value="available">Available Only</option>
+        <option value="unavailable">Unavailable</option>
+    </select>
+</div>
+
+<div class="books-grid" id="booksGrid">
+    {% for book in books %}
+    <div class="book-card"
+         data-title="{{ book['title']|lower }}"
+         data-author="{{ book['author']|lower }}"
+         data-isbn="{{ book['isbn']|lower }}"
+         data-category="{{ book['category'] }}"
+         data-available="{{ 'available' if book['available_quantity'] > 0 else 'unavailable' }}">
+        <div class="book-card-header">
+            <span class="badge badge-category">{{ book['category'] }}</span>
+            {% if book['available_quantity'] > 0 %}
+                <span class="badge badge-success">Available</span>
+            {% else %}
+                <span class="badge badge-danger">Unavailable</span>
+            {% endif %}
+        </div>
+        <h3 class="book-title">{{ book['title'] }}</h3>
+        <p class="book-author">by {{ book['author'] }}</p>
+        <p class="book-isbn">ISBN: {{ book['isbn'] }}</p>
+        <div class="book-card-footer">
+            <span class="book-copies">{{ book['available_quantity'] }} / {{ book['quantity'] }} copies</span>
+            <a href="{{ url_for('book_details', book_id=book['id']) }}" class="btn btn-small btn-primary">View Details</a>
+        </div>
+    </div>
+    {% else %}
+    <p class="empty-state">No books found in the library yet.</p>
+    {% endfor %}
+</div>
+<p id="noResultsMessage" class="empty-state" style="display:none;">No books match your search/filter.</p>
+{% endblock %}

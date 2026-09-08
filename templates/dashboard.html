@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Library System{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Welcome, {{ session.get('name') }} 👋</h1>
+    <p class="subtitle">Here's an overview of your library activity.</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card stat-blue">
+        <div class="stat-value">{{ stats.available_books }}</div>
+        <div class="stat-label">Available Books</div>
+    </div>
+    <div class="stat-card stat-green">
+        <div class="stat-value">{{ stats.currently_borrowed }}</div>
+        <div class="stat-label">Currently Borrowed</div>
+    </div>
+    <div class="stat-card stat-red">
+        <div class="stat-value">{{ stats.overdue_books }}</div>
+        <div class="stat-label">Overdue Books</div>
+    </div>
+    <div class="stat-card stat-purple">
+        <div class="stat-value">{{ stats.total_borrowed }}</div>
+        <div class="stat-label">Total Books Borrowed</div>
+    </div>
+</div>
+
+<div class="quick-links">
+    <a href="{{ url_for('books') }}" class="quick-link-card">
+        <span class="quick-link-icon">📖</span>
+        <span>Browse Books</span>
+    </a>
+    <a href="{{ url_for('scan') }}" class="quick-link-card">
+        <span class="quick-link-icon">📷</span>
+        <span>Scan QR to Issue</span>
+    </a>
+    <a href="{{ url_for('borrowed_books') }}" class="quick-link-card">
+        <span class="quick-link-icon">📚</span>
+        <span>My Borrowed Books</span>
+    </a>
+    <a href="{{ url_for('history') }}" class="quick-link-card">
+        <span class="quick-link-icon">🕘</span>
+        <span>Borrowing History</span>
+    </a>
+</div>
+{% endblock %}

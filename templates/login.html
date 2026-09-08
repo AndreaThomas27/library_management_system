@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login - Library System{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="brand-icon-large">📚</span>
+            <h1>Welcome Back</h1>
+            <p>Log in to your library account</p>
+        </div>
+        <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+        <p class="auth-footer">Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+
+        <div class="demo-credentials">
+            <strong>Demo Credentials</strong>
+            <div class="demo-row"><span>Admin:</span> admin@library.com / admin123</div>
+            <div class="demo-row"><span>Student:</span> student@library.com / student123</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
