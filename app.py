@@ -2133,12 +2133,10 @@ def internal_error(error):
 # APPLICATION ENTRY POINT
 # ===========================================================================
 
+# Initialize database when the application starts.
+# This is required for Gunicorn / Render too.
+init_db()
+
+
 if __name__ == "__main__":
-
-    # Create database tables if required.
-    init_db()
-
-    # Start Flask development server.
-    app.run(
-        debug=True
-    )
+    app.run(debug=True)
