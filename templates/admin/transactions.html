@@ -1,24 +1,66 @@
 {% extends "base.html" %}
+
 {% block title %}Transactions - Library System{% endblock %}
+
 {% block content %}
+
 <div class="page-header">
-    <h1>All Transactions</h1>
-    <p class="subtitle">Track every book issue and return.</p>
+    <div>
+        <h1>All Transactions</h1>
+        <p class="subtitle">Track every book issue and return.</p>
+    </div>
+
+    <a href="{{ url_for('admin_issue_book') }}" class="btn btn-primary">
+        + Issue Book
+    </a>
 </div>
 
-<form method="GET" action="{{ url_for('admin_transactions') }}" class="filters-bar">
-    <input type="text" name="q" value="{{ search_query }}" placeholder="Search by student or book title..." class="search-input">
-    <select name="status" class="filter-select" onchange="this.form.submit()">
-        <option value="All" {{ 'selected' if status_filter == 'All' }}>All</option>
-        <option value="Issued" {{ 'selected' if status_filter == 'Issued' }}>Issued</option>
-        <option value="Returned" {{ 'selected' if status_filter == 'Returned' }}>Returned</option>
-        <option value="Overdue" {{ 'selected' if status_filter == 'Overdue' }}>Overdue</option>
+
+<form method="GET"
+      action="{{ url_for('admin_transactions') }}"
+      class="filters-bar">
+
+    <input
+        type="text"
+        name="q"
+        value="{{ search_query }}"
+        placeholder="Search by student or book title..."
+        class="search-input"
+    >
+
+    <select
+        name="status"
+        class="filter-select"
+        onchange="this.form.submit()"
+    >
+        <option value="All" {{ 'selected' if status_filter == 'All' }}>
+            All
+        </option>
+
+        <option value="Issued" {{ 'selected' if status_filter == 'Issued' }}>
+            Issued
+        </option>
+
+        <option value="Returned" {{ 'selected' if status_filter == 'Returned' }}>
+            Returned
+        </option>
+
+        <option value="Overdue" {{ 'selected' if status_filter == 'Overdue' }}>
+            Overdue
+        </option>
     </select>
-    <button type="submit" class="btn btn-primary">Filter</button>
+
+    <button type="submit" class="btn btn-primary">
+        Filter
+    </button>
+
 </form>
 
+
 <div class="table-wrapper">
+
     <table class="data-table">
+
         <thead>
             <tr>
                 <th>Student</th>
@@ -27,30 +69,123 @@
                 <th>Due Date</th>
                 <th>Return Date</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
+
+
         <tbody>
+
             {% for t in transactions %}
+
             <tr>
-                <td>{{ t['student_name'] }}</td>
-                <td>{{ t['book_title'] }}</td>
-                <td>{{ t['issue_date'] }}</td>
-                <td>{{ t['due_date'] }}</td>
-                <td>{{ t['return_date'] or '-' }}</td>
+
+                <!-- Student -->
                 <td>
+                    {{ t['student_name'] }}
+                </td>
+
+
+                <!-- Book -->
+                <td>
+                    {{ t['book_title'] }}
+                </td>
+
+
+                <!-- Issue Date -->
+                <td>
+                    {{ t['issue_date'] }}
+                </td>
+
+
+                <!-- Due Date -->
+                <td>
+                    {{ t['due_date'] }}
+                </td>
+
+
+                <!-- Return Date -->
+                <td>
+                    {{ t['return_date'] or '-' }}
+                </td>
+
+
+                <!-- Status -->
+                <td>
+
                     {% if t['display_status'] == 'Returned' %}
-                        <span class="badge badge-success">Returned</span>
+
+                        <span class="badge badge-success">
+                            Returned
+                        </span>
+
                     {% elif t['display_status'] == 'Overdue' %}
-                        <span class="badge badge-danger">Overdue</span>
+
+                        <span class="badge badge-danger">
+                            Overdue
+                        </span>
+
                     {% else %}
-                        <span class="badge badge-warning">Issued</span>
+
+                        <span class="badge badge-warning">
+                            Issued
+                        </span>
+
                     {% endif %}
+
+                </td>
+
+
+                <!-- Action -->
+                <td>
+
+                    {% if t['display_status'] == 'Issued'
+                       or t['display_status'] == 'Overdue' %}
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'admin_return_book',
+                                transaction_id=t['id']
+                            ) }}"
+                            style="display: inline;"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn btn-sm"
+                                onclick="return confirm('Are you sure you want to return this book?');"
+                            >
+                                Return
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <span>-</span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+
+            {% else %}
+
+            <tr>
+                <td colspan="7" class="empty-state">
+                    No transactions found.
                 </td>
             </tr>
-            {% else %}
-            <tr><td colspan="6" class="empty-state">No transactions found.</td></tr>
+
             {% endfor %}
+
         </tbody>
+
     </table>
+
 </div>
+
 {% endblock %}
