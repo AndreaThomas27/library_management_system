@@ -2,3 +2,4 @@ Flask
 qrcode
 Pillow
 Werkzeug
+gunicorn
